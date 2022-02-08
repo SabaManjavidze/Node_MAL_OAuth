@@ -1,0 +1,28 @@
+{
+  "name": "mal_oauth",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "express": "^4.17.2",
+    "querystring": "^0.2.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "dotenv": "^16.0.0"
+  },
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SabaManjavidze/mal-oauth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SabaManjavidze/mal-oauth/issues"
+  },
+  "homepage": "https://github.com/SabaManjavidze/mal-oauth#readme"
+}
