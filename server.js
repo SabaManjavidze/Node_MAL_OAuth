@@ -4,7 +4,6 @@ const axios = require("axios");
 const crypto = require("crypto");
 const qs = require("querystring");
 const bodyParser = require("body-parser");
-require("dotenv").config({ path: path.resolve(__dirname, ".env") });
 
 const app = express();
 
