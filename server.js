@@ -3,6 +3,7 @@ const path = require("path")
 const axios = require("axios")
 const crypto = require("crypto")
 const qs = require("querystring")
+const bodyParser = require("body-parser");
 require("dotenv").config({ path: path.resolve(__dirname, ".env") })
 
 const app = express()
@@ -12,6 +13,8 @@ const{CLIENT_ID,CLIENT_SECRET,STATE_VAR} = process.env
 app.get("/", (req, res) => {
     res.send("MAL OAUTH2")
 })
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 const code_challenge = crypto.randomBytes(50).toString("hex")
 const getAuthUrl = async () => {
@@ -53,15 +56,22 @@ const getAccessToken = async (code) => {
     }
 }
 
-
-app.get("/oauth/callback", async (req, res) => {
-    const {code,state} = req.query
+// app.post("/posttest", (req, res) => {
+//     const body = req.body
+//     res.send(JSON.stringify(body))
+// })
+app.post("/oauth/token", async (req, res) => {
+    const {code,state} = req.body
     if (state==process.env.STATE_VAR) {
         const token = await getAccessToken(code)
-        res.send(token)
+        res.json(token)
     } else {
-        res.send("state not valid")
+        res.json({error:"state not valid"})
     }
+})
+
+app.get("/oauth/callback", async (req, res) => {
+    res.send("Successfully authenticated")
 })
 
 
