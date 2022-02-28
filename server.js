@@ -31,6 +31,7 @@ const getAuthUrl = async () => {
   }
 };
 app.get("/auth", async (req, res) => {
+  console.log(process.env.CLIENT_ID);
   const url = await getAuthUrl();
   res.redirect(url);
 });
