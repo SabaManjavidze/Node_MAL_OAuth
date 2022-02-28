@@ -36,6 +36,29 @@ app.get("/auth", async (req, res) => {
   res.redirect(url);
 });
 
+const getRandomImage = async () => {
+  try {
+    const manga_id = Math.floor(Math.random() * 100) + 1;
+    const rootUrl = `https://api.myanimelist.net/v2/manga/${manga_id}`;
+    const headers = {
+      "X-MAL-CLIENT-ID": process.env.CLIENT_ID,
+    };
+    const response = await axios.get(rootUrl, { headers });
+    return response.data.main_picture.large;
+  } catch (error) {
+    return error;
+  }
+};
+app.use(express.static("public"));
+app.get("/randomImage.jpg", async (req, res) => {
+  const url = await getRandomImage();
+  res.send(
+    `
+    <body style="background-image: url(${url}); background-size: contain; background-repeat:no-repeat;background-position:center">
+    </body>
+    `
+  );
+});
 const getAccessToken = async (code) => {
   try {
     const rootUrl = "https://myanimelist.net/v1/oauth2/token";
