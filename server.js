@@ -5,12 +5,12 @@ const qs = require("querystring");
 const bodyParser = require("body-parser");
 
 const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.get("/", (req, res) => {
   res.send("MAL OAUTH2");
 });
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 const code_challenge = crypto.randomBytes(50).toString("hex");
 
