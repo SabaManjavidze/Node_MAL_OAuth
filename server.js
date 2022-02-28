@@ -49,15 +49,9 @@ const getRandomImage = async () => {
     return error;
   }
 };
-app.use(express.static("public"));
 app.get("/randomImage.jpg", async (req, res) => {
   const url = await getRandomImage();
-  res.send(
-    `
-    <body style="background-image: url(${url}); background-size: contain; background-repeat:no-repeat;background-position:center">
-    </body>
-    `
-  );
+  res.redirect(url);
 });
 const getAccessToken = async (code) => {
   try {
@@ -67,7 +61,6 @@ const getAccessToken = async (code) => {
       client_secret: process.env.CLIENT_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://localhost:3000/oauth/callback",
       code_verifier: code_challenge,
     };
     const response = await axios.post(rootUrl, qs.stringify(options));
