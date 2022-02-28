@@ -1,5 +1,4 @@
 const express = require("express");
-const path = require("path");
 const axios = require("axios");
 const crypto = require("crypto");
 const qs = require("querystring");
@@ -14,6 +13,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 const code_challenge = crypto.randomBytes(50).toString("hex");
+
 const getAuthUrl = async () => {
   try {
     const rootUrl = "https://myanimelist.net/v1/oauth2/authorize";
