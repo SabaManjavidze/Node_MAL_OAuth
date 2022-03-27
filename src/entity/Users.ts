@@ -3,7 +3,7 @@ import { BaseEntity, Column, Entity, ManyToMany, PrimaryColumn } from "typeorm";
 import { Chapters } from "./Chapters";
 // import { Chapters } from "./Chapters";
 
-@Entity({ name: "users" })
+@Entity()
 @ObjectType()
 export class Users extends BaseEntity {
   @Field(() => Int)

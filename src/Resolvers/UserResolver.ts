@@ -22,7 +22,8 @@ export default class UserResolver {
   // SELECT * FROM USERS
   @Query(() => [Users])
   async getUsers() {
-    return await Users.find();
+    const users = await Users.find();
+    return users;
   }
 
   // INSERT INTO USERS

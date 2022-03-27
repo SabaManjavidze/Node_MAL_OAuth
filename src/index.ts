@@ -3,8 +3,8 @@ import bodyParser from "body-parser";
 import "reflect-metadata";
 import { createConnection } from "typeorm";
 import { buildSchema } from "type-graphql";
-import UserResolver from "./Resolvers/UserResolver";
 import { ApolloServer } from "apollo-server-express";
+import { UserResolver, ChapterResolver } from "./Resolvers";
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageProductionDefault,
@@ -15,7 +15,7 @@ require("dotenv").config({ path: __dirname + "/.env" });
 
 const main = async () => {
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [UserResolver, ChapterResolver],
   });
 
   const app = express();

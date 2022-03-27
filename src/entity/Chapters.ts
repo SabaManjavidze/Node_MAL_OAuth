@@ -1,16 +1,13 @@
-import { Field, ObjectType } from "type-graphql";
+import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
   Entity,
   JoinTable,
   ManyToMany,
-  // JoinTable,
-  // ManyToMany,
   PrimaryColumn,
 } from "typeorm";
 import { Users } from "./Users";
-// import { User } from "./User";
 @ObjectType()
 @Entity()
 export class Chapters extends BaseEntity {
@@ -34,16 +31,19 @@ export class Chapters extends BaseEntity {
   @Column()
   chap_title: string;
 
-  @Field()
+  @Field(() => Int)
   @Column()
   chap_num: number;
 
+  @Field()
   @Column()
   upload_date: string;
 
+  @Field()
   @Column()
   manga_id: string;
 
+  @Field()
   @Column()
   view_count: string;
 }
