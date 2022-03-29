@@ -10,8 +10,8 @@ import {
   ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
 import { getAccessToken, getAuthUrl } from "./mal_services";
-import { config } from "../ormconfig";
-require("dotenv").config({ path: __dirname + "/.env" });
+import { config } from "./ormconfig";
+require("dotenv").config({ path: __dirname + "/../.env" });
 
 const main = async () => {
   const schema = await buildSchema({

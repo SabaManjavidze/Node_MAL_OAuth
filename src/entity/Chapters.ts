@@ -8,6 +8,7 @@ import {
   PrimaryColumn,
 } from "typeorm";
 import { Users } from "./Users";
+
 @ObjectType()
 @Entity()
 export class Chapters extends BaseEntity {
