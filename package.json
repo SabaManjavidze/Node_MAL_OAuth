@@ -2,14 +2,14 @@
   "name": "mal_oauth",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
-  "type": "module",
+  "main": "index.js",
   "dependencies": {
     "apollo-server-express": "^3.6.6",
     "axios": "^0.25.0",
     "body-parser": "^1.19.1",
     "class-validator": "^0.13.2",
     "dotenv": "^16.0.0",
+    "dotenv-safe": "^8.2.0",
     "express": "^4.17.3",
     "graphql": "^15.3.0",
     "pg": "^8.7.3",
@@ -28,7 +28,10 @@
   },
   "scripts": {
     "start": "node dist/index.js",
-    "build": "tsc"
+    "dev": "nodemon dist/index.js",
+    "start-dev": "nodemon --exec ts-node src/index.ts",
+    "build": "tsc",
+    "watch": "tsc -w"
   },
   "repository": {
     "type": "git",

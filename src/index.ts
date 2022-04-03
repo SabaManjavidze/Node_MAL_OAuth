@@ -1,17 +1,19 @@
 import express from "express";
 import bodyParser from "body-parser";
 import "reflect-metadata";
+import "dotenv-safe/config";
 import { createConnection } from "typeorm";
 import { buildSchema } from "type-graphql";
 import { ApolloServer } from "apollo-server-express";
-import { UserResolver, ChapterResolver } from "./Resolvers";
+
 import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
 import { getAccessToken, getAuthUrl } from "./mal_services";
 import { config } from "./ormconfig";
-require("dotenv").config({ path: __dirname + "/../.env" });
+import UserResolver from "./Resolvers/UserResolver";
+import ChapterResolver from "./Resolvers/ChapterResolver";
 
 const main = async () => {
   const schema = await buildSchema({

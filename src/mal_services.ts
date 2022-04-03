@@ -17,7 +17,7 @@ export const getAuthUrl = async () => {
     };
     return `${rootUrl}?${new URLSearchParams(options)}`;
   } catch (error) {
-    return error;
+    return `There was an error :   ${error}`;
   }
 };
 
