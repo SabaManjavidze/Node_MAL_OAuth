@@ -1,6 +1,6 @@
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
-import "dotenv-safe/config";
-
+import dotenv from "dotenv";
+dotenv.config();
 export const config: PostgresConnectionOptions = {
   type: "postgres",
   host: "localhost",
