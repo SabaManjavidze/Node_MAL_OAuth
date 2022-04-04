@@ -22,9 +22,13 @@ const main = async () => {
 
   const app = express();
   app.use(bodyParser.json());
-  await createConnection(config).then(async () => {
-    console.log("Connected to Postgresql🐘");
-  });
+  try {
+    await createConnection(config).then(async () => {
+      console.log("Connected to Postgresql🐘");
+    });
+  } catch (error) {
+    console.log(error);
+  }
 
   const server = new ApolloServer({
     schema,
