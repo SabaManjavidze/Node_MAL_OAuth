@@ -38,6 +38,7 @@ const main = async () => {
         ? ApolloServerPluginLandingPageProductionDefault()
         : ApolloServerPluginLandingPageGraphQLPlayground(),
     ],
+    introspection: true,
   });
   await server.start();
 

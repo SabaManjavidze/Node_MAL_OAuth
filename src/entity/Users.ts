@@ -2,6 +2,7 @@ import { Field, Int, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, ManyToMany, PrimaryColumn } from "typeorm";
 import { Chapters } from "./Chapters";
 // import { Chapters } from "./Chapters";
+// import {validate} from "class-validator"
 
 @Entity()
 @ObjectType()
