@@ -6,9 +6,9 @@ export const config: PostgresConnectionOptions = {
   url: process.env.DATABASE_URL || "",
   synchronize: true,
   logging: false,
-  entities: ["src/entity/**/*.ts"],
-  migrations: ["src/migration/**/*.ts"],
-  subscribers: ["src/subscriber/**/*.ts"],
+  entities: ["./entity/**/*.ts", "./entity/**/*.js"],
+  migrations: ["./migration/**/*.ts", "./migration/**/*.js"],
+  subscribers: ["./subscriber/**/*.ts", "./subscriber/**/*.js"],
   extra: {
     ssl: {
       rejectUnauthorized: false,
