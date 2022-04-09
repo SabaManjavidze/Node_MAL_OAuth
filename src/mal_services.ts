@@ -12,7 +12,7 @@ export const getAuthUrl = async () => {
       client_secret: process.env.CLIENT_SECRET,
       code_challenge: code_challenge,
       response_type: "code",
-      redirect_uri: "http://localhost:3000/oauth/callback",
+      redirect_uri: "https://node-mal-oauth.herokuapp.com/oauth/callback",
       state: process.env.STATE_VAR,
     };
     return `${rootUrl}?${new URLSearchParams(options)}`;
@@ -29,7 +29,7 @@ export const getAccessToken = async (code: string) => {
       client_secret: process.env.CLIENT_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: "http://localhost:3000/oauth/callback",
+      redirect_uri: "https://node-mal-oauth.herokuapp.com/oauth/callback",
       code_verifier: code_challenge,
     };
     const response = await axios.post(rootUrl, qs.stringify(options));
