@@ -14,19 +14,18 @@
     "pg": "^8.7.3",
     "querystring": "^0.2.1",
     "reflect-metadata": "^0.1.13",
-    "ts-node-dev": "^1.1.8",
     "type-graphql": "^1.1.1",
     "typeorm": "^0.3.0",
-    "typescript": "^4.6.2"
+    "typescript": "^4.6.2",
+    "ts-node": "^10.7.0"
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
     "@types/node": "^17.0.21",
-    "nodemon": "^2.0.15",
-    "ts-node": "^10.7.0"
+    "nodemon": "^2.0.15"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "cd dist && node index.js",
     "dev": "nodemon dist/index.js",
     "start-dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
@@ -34,12 +33,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SabaManjavidze/mal-oauth.git"
+    "url": "git+https://github.com/SabaManjavidze/Node_MAL_OAuth.git"
   },
-  "author": "",
+  "author": "Saba Manjavidze",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/SabaManjavidze/mal-oauth/issues"
+    "url": "https://github.com/SabaManjavidze/Node_MAL_OAuth/issues"
   },
-  "homepage": "https://github.com/SabaManjavidze/mal-oauth#readme"
+  "homepage": "https://github.com/SabaManjavidze/Node_MAL_OAuth#readme"
 }
