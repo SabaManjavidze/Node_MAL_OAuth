@@ -6,7 +6,11 @@ export const config: PostgresConnectionOptions = {
   url: process.env.DATABASE_URL || "",
   synchronize: true,
   logging: false,
-  entities: ["./entity/**/*.ts", "./entity/**/*.js"],
+  entities: [
+    "./entity/**/*.ts",
+    "./entity/**/*.js",
+    `${__dirname}/entity/**/*.ts`,
+  ],
   migrations: ["./migration/**/*.ts", "./migration/**/*.js"],
   subscribers: ["./subscriber/**/*.ts", "./subscriber/**/*.js"],
   extra: {

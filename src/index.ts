@@ -10,29 +10,28 @@ import {
   ApolloServerPluginLandingPageGraphQLPlayground,
   ApolloServerPluginLandingPageProductionDefault,
 } from "apollo-server-core";
-import { getAccessToken, getAuthUrl } from "./mal_services";
+import { getAccessToken, getAuthUrl } from "./utils/mal_services";
 import { config } from "./ormconfig";
 import UserResolver from "./Resolvers/UserResolver";
-import ChapterResolver from "./Resolvers/ChapterResolver";
+import MangaResolver from "./Resolvers/MangaResolver";
+import { createMangaLoader } from "./utils/MangaLoader";
+import ReadMangaResolver from "./Resolvers/ReadMangaResolver";
 dotenv.config();
 const main = async () => {
-  const schema = await buildSchema({
-    resolvers: [UserResolver, ChapterResolver],
-  });
-
-  const app = express();
-  app.use(bodyParser.json());
   try {
-    await createConnection(config).then(async () => {
-      console.log("Connected to Postgresql🐘");
-    });
+    await createConnection(config);
+    console.log("Connected to Postgresql🐘");
   } catch (error) {
     console.log(error);
   }
 
+  const schema = await buildSchema({
+    resolvers: [UserResolver, MangaResolver, ReadMangaResolver],
+  });
+
   const server = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res }),
+    context: ({ req, res }) => ({ req, res, mangaLoader: createMangaLoader }),
     plugins: [
       process.env.NODE_ENV === "production"
         ? ApolloServerPluginLandingPageProductionDefault()
@@ -41,6 +40,9 @@ const main = async () => {
     introspection: true,
   });
   await server.start();
+
+  const app = express();
+  app.use(bodyParser.json());
 
   server.applyMiddleware({ app, cors: false });
 
