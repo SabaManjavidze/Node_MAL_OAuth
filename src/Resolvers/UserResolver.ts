@@ -65,8 +65,8 @@ export default class UserResolver {
   //  REMOVE FROM USERS
   @Mutation(() => String)
   async removeUser(@Arg("user_id", () => Int) user_id: number) {
-    const name = await Users.find({ where: { user_id } });
-    await Users.delete({ user_id });
-    return `removed user ${name[0].user_name}`;
+    const user = await Users.find({ where: { user_id } });
+    await user[0].remove();
+    return `removed user ${user[0].user_name}`;
   }
 }

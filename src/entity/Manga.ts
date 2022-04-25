@@ -12,7 +12,7 @@ import { ReadManga } from "./ReadManga";
 @ObjectType()
 @Entity()
 export class Manga extends BaseEntity {
-  @OneToMany(() => ReadManga, (rm) => rm.manga)
+  @OneToMany(() => ReadManga, (rm) => rm.manga, { onDelete: "CASCADE" })
   UserConnection: ReadManga[];
 
   @Field()

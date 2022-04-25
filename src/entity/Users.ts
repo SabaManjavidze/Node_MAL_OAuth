@@ -13,7 +13,7 @@ export class Users extends BaseEntity {
 
   @Field(() => [Manga], { nullable: true })
   async manga(@Ctx() { mangaLoader }: MyContext): Promise<Manga[]> {
-    return mangaLoader.load(this.user_id);
+    return await mangaLoader.load(this.user_id);
   }
 
   @OneToMany(() => ReadManga, (rm) => rm.user)

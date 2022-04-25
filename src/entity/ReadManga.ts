@@ -24,13 +24,15 @@ export class ReadManga extends BaseEntity {
   @PrimaryColumn({ onUpdate: "CASCADE" })
   user_id: number;
 
-  @ManyToOne(() => Manga, (manga) => manga.UserConnection)
+  @ManyToOne(() => Manga, (manga) => manga.UserConnection, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "manga_id" })
   manga: Manga;
 
   @ManyToOne(() => Users, (user) => user.MangaConnection, {
-//    onDelete: "CASCADE",
- //   onUpdate: "CASCADE",
+    onDelete: "CASCADE",
+    onUpdate: "CASCADE",
   })
   @JoinColumn({ name: "user_id" })
   user: Users;

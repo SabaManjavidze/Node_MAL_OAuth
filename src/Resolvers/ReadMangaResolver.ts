@@ -1,3 +1,4 @@
+import { Users } from "../entity/Users";
 import {
   Arg,
   Field,
@@ -9,10 +10,18 @@ import {
 } from "type-graphql";
 import { ReadManga } from "../entity/ReadManga";
 
+@InputType()
+class ReadMangaInput {
+  @Field()
+  user_id: number;
+  @Field({ nullable: true })
+  manga_id: string;
+}
+
 @Resolver()
 export default class ReadMangaResolver {
   // INSERT INTO READ_MANGA
-  @Mutation(() => ReadManga)
+  @Mutation(() => Boolean)
   async createReadManga(
     @Arg("user_id", () => Int) user_id: number,
     @Arg("manga_id") manga_id: string,
@@ -29,12 +38,28 @@ export default class ReadMangaResolver {
           minute: "numeric",
           second: "numeric",
         });
-    const read_manga = ReadManga.create({
+    await ReadManga.insert({
       manga_id,
       user_id,
       read_date: now_date,
-    }).save();
-    return read_manga;
+    });
+    return true;
+  }
+  @Mutation(() => Boolean)
+  async removeReadManga(
+    @Arg("options", () => ReadMangaInput) options: ReadMangaInput
+  ) {
+    const { user_id, manga_id } = options;
+
+    if (manga_id) {
+      const ids = await ReadManga.find({ where: { user_id, manga_id } });
+      await ids[0].remove();
+      return true;
+    }
+
+    const ids = await ReadManga.find({ where: { user_id } });
+    ids.map(async (item) => await item.remove());
+    return true;
   }
 
   @Query(() => [ReadManga])
