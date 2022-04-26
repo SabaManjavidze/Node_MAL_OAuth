@@ -31,7 +31,11 @@ const main = async () => {
 
   const server = new ApolloServer({
     schema,
-    context: ({ req, res }) => ({ req, res, mangaLoader: createMangaLoader }),
+    context: ({ req, res }) => ({
+      req,
+      res,
+      mangaLoader: createMangaLoader(),
+    }),
     plugins: [
       process.env.NODE_ENV === "production"
         ? ApolloServerPluginLandingPageProductionDefault()

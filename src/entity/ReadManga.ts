@@ -31,7 +31,7 @@ export class ReadManga extends BaseEntity {
   manga: Manga;
 
   @ManyToOne(() => Users, (user) => user.MangaConnection, {
-    // onDelete: "CASCADE",
+    onDelete: "CASCADE",
     // onUpdate: "CASCADE",
   })
   @JoinColumn({ name: "user_id" })

@@ -3,8 +3,8 @@ import { Manga } from "../entity/Manga";
 import { In } from "typeorm";
 import { ReadManga } from "../entity/ReadManga";
 
-export const createMangaLoader = new DataLoader<number, Manga[]>(
-  async (user_ids) => {
+export const createMangaLoader = () =>
+  new DataLoader<number, Manga[]>(async (user_ids) => {
     const users = await ReadManga.find({
       join: {
         alias: "readManga",
@@ -27,5 +27,4 @@ export const createMangaLoader = new DataLoader<number, Manga[]>(
     });
 
     return user_ids.map((user_id) => userIdToManga[user_id]);
-  }
-);
+  });
