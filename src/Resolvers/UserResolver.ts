@@ -31,7 +31,13 @@ class UserInput {
 export default class UserResolver {
   // SELECT * FROM USERS
   @Query(() => [Users])
-  async getUsers() {
+  async getUsers(
+    @Arg("user_id", () => Int, { nullable: true }) user_id: number
+  ) {
+    if (user_id) {
+      const users = await Users.find({ where: { user_id } });
+      return users;
+    }
     const users = await Users.find();
     return users;
   }
