@@ -90,7 +90,20 @@ export default class ReadMangaResolver {
   }
 
   @Query(() => [ReadManga])
-  async getReadManga() {
-    return ReadManga.find();
+  async getReadManga(
+    @Arg("options", () => ReadMangaInput, { nullable: true })
+    options: ReadMangaInput
+  ) {
+    if (options) {
+      const { user_id, manga_id } = options;
+      if (manga_id) {
+        const ids = await ReadManga.find({ where: { user_id, manga_id } });
+        return ids;
+      }
+
+      const ids = await ReadManga.find({ where: { user_id } });
+      return ids;
+    }
+    return await ReadManga.find();
   }
 }
