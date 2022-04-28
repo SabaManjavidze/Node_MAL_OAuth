@@ -39,5 +39,8 @@ export class ReadManga extends BaseEntity {
 
   @Field()
   @Column()
+  last_read_chapter: number;
+  @Field()
+  @Column()
   read_date: string;
 }

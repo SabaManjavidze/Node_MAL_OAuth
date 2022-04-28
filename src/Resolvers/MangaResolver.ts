@@ -22,21 +22,33 @@ export class MangaInput {
 export default class MangaResolver {
   // SELECT * FROM Manga
   @Query(() => [Manga])
-  async getManga() {
-    return await Manga.find();
+  async getManga(
+    @Arg("manga_id", () => String, { nullable: true }) manga_id: string
+  ) {
+    if (manga_id) {
+      const manga = await Manga.find({ where: { manga_id } });
+      return manga;
+    }
+    const manga = await Manga.find();
+    return manga;
   }
 
   // INSERT INTO MANGA
-  @Mutation(() => Manga)
+  @Mutation(() => Boolean)
   async createManga(
     @Arg("title", () => String) title: string,
     @Arg("manga_id", () => String) manga_id: string
   ) {
-    const manga = await Manga.create({
+    const exists = await Manga.find({ where: { manga_id } });
+    if (exists[0]) {
+      // return `manga with id ${manga_id} already exists`;
+      return true;
+    }
+    await Manga.create({
       manga_id: manga_id,
       title: title,
     }).save();
-    return manga;
+    return false;
   }
 
   // UPDATE Manga

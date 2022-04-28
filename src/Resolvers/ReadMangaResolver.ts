@@ -25,7 +25,9 @@ export default class ReadMangaResolver {
   async createReadManga(
     @Arg("user_id", () => Int) user_id: number,
     @Arg("manga_id") manga_id: string,
-    @Arg("read_date", { nullable: true }) read_date: string
+    @Arg("read_date", { nullable: true }) read_date: string,
+    @Arg("last_chapter_read", () => Int, { nullable: true })
+    last_chapter_read: number
   ) {
     const now_date = read_date
       ? read_date
@@ -42,6 +44,7 @@ export default class ReadMangaResolver {
       manga_id,
       user_id,
       read_date: now_date,
+      last_read_chapter: last_chapter_read,
     });
     return true;
   }
@@ -60,6 +63,30 @@ export default class ReadMangaResolver {
     const ids = await ReadManga.find({ where: { user_id } });
     ids.map(async (item) => await item.remove());
     return true;
+  }
+
+  @Mutation(() => Boolean)
+  async updateReadManga(
+    @Arg("options", () => ReadMangaInput) options: ReadMangaInput,
+    @Arg("read_date", () => String, { nullable: true }) read_date: string,
+    @Arg("last_chapter_read", () => Int, { nullable: true })
+    last_read_chapter: number
+  ) {
+    const { user_id, manga_id } = options;
+    if (last_read_chapter && read_date) {
+      await ReadManga.update(
+        { user_id, manga_id },
+        { read_date, last_read_chapter }
+      );
+      return true;
+    } else if (last_read_chapter) {
+      await ReadManga.update({ user_id, manga_id }, { last_read_chapter });
+      return true;
+    } else if (read_date) {
+      await ReadManga.update({ user_id, manga_id }, { read_date });
+      return true;
+    }
+    return false;
   }
 
   @Query(() => [ReadManga])
