@@ -9,5 +9,5 @@ export class UserManga {
   @Field()
   read_date: String;
   @Field()
-  last_read_chapter: number;
+  last_read_chapter: String;
 }

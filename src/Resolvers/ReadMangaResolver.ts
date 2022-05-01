@@ -42,8 +42,8 @@ export default class ReadMangaResolver {
   async createReadManga(
     @Arg("options", () => ReadMangaInput) options: ReadMangaInput,
     @Arg("read_date", { nullable: true }) read_date: string,
-    @Arg("last_read_chapter", () => Int, { nullable: true })
-    last_read_chapter: number
+    @Arg("last_read_chapter", { nullable: true })
+    last_read_chapter: string
   ) {
     const { user_id, manga_id } = options;
     const now_date = read_date

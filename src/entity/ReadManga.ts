@@ -1,4 +1,4 @@
-import { Field, Int, ObjectType } from "type-graphql";
+import { Field, Float, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -39,7 +39,7 @@ export class ReadManga extends BaseEntity {
 
   @Field()
   @Column()
-  last_read_chapter: number;
+  last_read_chapter: string;
   @Field()
   @Column()
   read_date: string;
