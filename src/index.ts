@@ -58,9 +58,9 @@ const main = async () => {
 
   // dev url
   // const redirect_uri = "exp://192.168.0.109:19000/--/auth";
-  const redirect_uri = "https://node-mal-oauth.herokuapp.com/oauth/callback";
+  const redirect_uri_2 = "https://node-mal-oauth.herokuapp.com/oauth/callback";
   // prod url
-  const redirect_uri_2 = "saba://auth";
+  const redirect_uri = "saba://auth";
 
   app.get("/auth", async (_req: any, res: any) => {
     const url = await getAuthUrl();
