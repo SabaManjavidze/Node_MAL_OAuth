@@ -75,8 +75,9 @@ const main = async () => {
 
   app.post("/oauth/token", async (req: any, res: any) => {
     const { code, state } = req.body;
+    console.log("body", req.body);
     const agent = req.get("user-agent");
-    if (state == process.env.STATE_VAR) {
+    if (state === process.env.STATE_VAR) {
       const token = await getAccessToken(agent, code);
       console.log("token", token);
       res.json(token);
