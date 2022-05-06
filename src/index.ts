@@ -56,23 +56,34 @@ const main = async () => {
     res.send("MAL OAUTH2");
   });
 
-  app.get("/auth", async (_req: express.Request, res: express.Response) => {
+  // dev url
+  // const redirect_uri = "exp://192.168.0.109:19000/--/auth";
+  const redirect_uri = "https://node-mal-oauth.herokuapp.com/oauth/callback";
+  // prod url
+  const redirect_uri_2 = "saba://auth";
+
+  app.get("/auth", async (_req: any, res: any) => {
     const url = await getAuthUrl();
-    res.redirect(url);
+    const redirect_uri_param: string =
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        _req.get("user-agent") || ""
+      )
+        ? redirect_uri
+        : redirect_uri_2;
+    res.redirect(`${url}&redirect_uri=${redirect_uri_param}`);
   });
 
-  app.post(
-    "/oauth/token",
-    async (req: express.Request, res: express.Response) => {
-      const { code, state } = req.body;
-      if (state == process.env.STATE_VAR) {
-        const token = await getAccessToken(code);
-        res.json(token);
-      } else {
-        res.json({ error: "Invalid state" });
-      }
+  app.post("/oauth/token", async (req: any, res: any) => {
+    const { code, state } = req.body;
+    const agent = req.get("user-agent");
+    if (state == process.env.STATE_VAR) {
+      const token = await getAccessToken(agent, code);
+      console.log("token", token);
+      res.json(token);
+    } else {
+      res.json({ error: "Invalid state" });
     }
-  );
+  });
 
   app.get(
     "/oauth/callback",
