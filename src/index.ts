@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import "reflect-metadata";
 import dotenv from "dotenv";
@@ -17,6 +17,7 @@ import MangaResolver from "./Resolvers/MangaResolver";
 import { createMangaLoader } from "./utils/MangaLoader";
 import ReadMangaResolver from "./Resolvers/ReadMangaResolver";
 import { getChapter } from "./utils/getChapter";
+
 dotenv.config();
 const main = async () => {
   try {
@@ -53,7 +54,7 @@ const main = async () => {
 
   //#region ------------------------- Express ---------------------------------------------------
 
-  app.get("/", (_req: express.Request, res: express.Response) => {
+  app.get("/", (_req: Request, res: Response) => {
     res.send("MAL OAUTH2");
   });
 
@@ -63,7 +64,7 @@ const main = async () => {
   // prod url
   const redirect_uri = "saba://auth";
 
-  app.get("/auth", async (_req: any, res: any) => {
+  app.get("/auth", async (_req: Request, res: Response) => {
     const url = await getAuthUrl();
     const redirect_uri_param: string =
       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
@@ -94,7 +95,7 @@ const main = async () => {
    <body>
    ${script}`;
 
-  app.get("/chapter/:mangaId/:chapNum", async (req: any, res: any) => {
+  app.get("/chapter/:mangaId/:chapNum", async (req: Request, res: Response) => {
     const { mangaId, chapNum } = req.params;
     console.log(req.params);
     const data = await getChapter(mangaId, chapNum);
@@ -105,7 +106,7 @@ const main = async () => {
     res.send(html + html_data.join("") + "</body></html>");
     // res.send(data);
   });
-  app.post("/oauth/token", async (req: any, res: any) => {
+  app.post("/oauth/token", async (req: Request, res: Response) => {
     const { code, state } = req.body;
     console.log("body", req.body);
     const agent = req.get("user-agent");
@@ -118,14 +119,11 @@ const main = async () => {
     }
   });
 
-  app.get(
-    "/oauth/callback",
-    async (_req: express.Request, res: express.Response) => {
-      res.send("successfully authenticated");
-    }
-  );
+  app.get("/oauth/callback", async (_req: Request, res: Response) => {
+    res.send("successfully authenticated");
+  });
 
-  const PORT = process.env.PORT || 3000;
+  const PORT = process.env.PORT || 9000;
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}🏃‍`);
   });
