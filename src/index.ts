@@ -16,6 +16,7 @@ import UserResolver from "./Resolvers/UserResolver";
 import MangaResolver from "./Resolvers/MangaResolver";
 import { createMangaLoader } from "./utils/MangaLoader";
 import ReadMangaResolver from "./Resolvers/ReadMangaResolver";
+import { getChapter } from "./utils/getChapter";
 dotenv.config();
 const main = async () => {
   try {
@@ -72,7 +73,38 @@ const main = async () => {
         : redirect_uri_2;
     res.redirect(`${url}&redirect_uri=${redirect_uri_param}`);
   });
+  const main_color = "#282A41";
+  // padding-top: ${StatusBar.currentHeight};
+  const script = `<script>
+  const images = document.querySelectorAll('img');
+   console.log(images) 
+  window.addEventListener('scroll', function(e) {
+// const image = images.findIndex(img=>img.scrollTop>e.target.scrollY)
+ window.ReactNativeWebView.postMessage(window.scrollY);
+  });
+  </script>`;
+  const html = `
+  <html>
+   <head>
+      <style>
+         html {
+         overflow-x: hidden;word-wrap: break-word;}body {padding-bottom: 30px;background-color:${main_color}}img {display: block;width: auto;height: auto;width: 100%;}
+      </style>
+   </head>
+   <body>
+   ${script}`;
 
+  app.get("/chapter/:mangaId/:chapNum", async (req: any, res: any) => {
+    const { mangaId, chapNum } = req.params;
+    console.log(req.params);
+    const data = await getChapter(mangaId, chapNum);
+    const html_data = data.map((d: any) => {
+      return `<img onClick={window.ReactNativeWebView.postMessage("hide")} src="${d.src}" alt="${d.src}">`;
+    });
+    // (globalThis as any).ReactNativeWebView.postMessage("chapter");
+    res.send(html + html_data.join("") + "</body></html>");
+    // res.send(data);
+  });
   app.post("/oauth/token", async (req: any, res: any) => {
     const { code, state } = req.body;
     console.log("body", req.body);
