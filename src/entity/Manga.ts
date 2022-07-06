@@ -22,4 +22,7 @@ export class Manga extends BaseEntity {
   @Field()
   @PrimaryColumn({ primary: true })
   manga_id: string;
+  @Field()
+  @Column()
+  img_url: string;
 }

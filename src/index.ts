@@ -18,6 +18,7 @@ import { createMangaLoader } from "./utils/MangaLoader";
 import ReadMangaResolver from "./Resolvers/ReadMangaResolver";
 import { getChapter } from "./utils/getChapter";
 import { chapter } from "./routes/chapter";
+import { app_deep_link, expo_deep_link, redirect_uri } from "./utils/variables";
 
 dotenv.config();
 const main = async () => {
@@ -61,37 +62,47 @@ const main = async () => {
 
   // dev url
   // const redirect_uri = "exp://192.168.0.109:19000/--/auth";
-  const redirect_uri_2 = "https://node-mal-oauth.herokuapp.com/oauth/callback";
+  // get current url
+
   // prod url
-  const redirect_uri = "saba://auth";
 
   app.get("/auth", async (_req: Request, res: Response) => {
     const url = await getAuthUrl();
-    const redirect_uri_param: string =
-      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-        _req.get("user-agent") || ""
-      )
-        ? redirect_uri
-        : redirect_uri_2;
-    res.redirect(`${url}&redirect_uri=${redirect_uri_param}`);
+    // console.log("first");
+    console.log(redirect_uri);
+    res.redirect(`${url}&redirect_uri=${redirect_uri}`);
   });
 
   app.get("/chapter/:mangaId/:chapNum", chapter);
+
   app.post("/oauth/token", async (req: Request, res: Response) => {
     const { code, state } = req.body;
-    console.log("body", req.body);
+    // console.log("body", req.body);
     const agent = req.get("user-agent");
     if (state === process.env.STATE_VAR) {
       const token = await getAccessToken(agent, code);
-      console.log("token", token);
+      // console.log("token", token);
       res.json(token);
     } else {
       res.json({ error: "Invalid state" });
     }
   });
 
-  app.get("/oauth/callback", async (_req: Request, res: Response) => {
-    res.send("successfully authenticated");
+  app.get("/oauth/callback", async (req: Request, res: Response) => {
+    const { code, state } = req.query;
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        req.get("user-agent") || ""
+      )
+    ) {
+      const mobile_link =
+        process.env.NODE_ENV === "production" ? app_deep_link : expo_deep_link;
+      const mobile_redirect = `${mobile_link}?code=${code}&state=${state}`;
+      res.redirect(mobile_redirect);
+      return;
+    }
+
+    res.send("Please use a mobile device");
   });
 
   const PORT = process.env.PORT || 9000;

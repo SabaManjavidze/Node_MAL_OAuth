@@ -10,6 +10,7 @@ export const config: PostgresConnectionOptions = {
     "./entity/**/*.ts",
     "./entity/**/*.js",
     `${__dirname}/entity/**/*.ts`,
+    `${__dirname}/entity/**/*.js`,
   ],
   migrations: ["./migration/**/*.ts", "./migration/**/*.js"],
   subscribers: ["./subscriber/**/*.ts", "./subscriber/**/*.js"],

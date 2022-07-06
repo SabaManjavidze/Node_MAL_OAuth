@@ -37,7 +37,8 @@ export default class MangaResolver {
   @Mutation(() => Boolean)
   async createManga(
     @Arg("title", () => String) title: string,
-    @Arg("manga_id", () => String) manga_id: string
+    @Arg("manga_id", () => String) manga_id: string,
+    @Arg("img_url", () => String) img_url: string
   ) {
     const exists = await Manga.find({ where: { manga_id } });
     if (exists[0]) {
@@ -45,8 +46,9 @@ export default class MangaResolver {
       return true;
     }
     await Manga.create({
-      manga_id: manga_id,
-      title: title,
+      manga_id,
+      title,
+      img_url,
     }).save();
     return false;
   }

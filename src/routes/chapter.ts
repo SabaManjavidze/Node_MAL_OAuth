@@ -36,7 +36,7 @@ const html = `
    ${style}
    </head>
    <body>
-   ${script}`;
+   `;
 
 export const chapter = async (req: Request, res: Response) => {
   const { mangaId, chapNum } = req.params;

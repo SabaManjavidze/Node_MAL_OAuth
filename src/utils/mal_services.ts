@@ -1,13 +1,9 @@
 import axios from "axios";
 import crypto from "crypto";
 import qs from "querystring";
+import { redirect_uri } from "./variables";
 
 const code_challenge = crypto.randomBytes(50).toString("hex");
-// dev url
-// const redirect_uri = "exp://192.168.0.109:19000/--/auth";
-const redirect_uri = "https://node-mal-oauth.herokuapp.com/oauth/callback";
-// prod url
-const redirect_uri_2 = "saba://auth";
 
 export const getAuthUrl = async () => {
   try {
@@ -40,10 +36,10 @@ export const getAccessToken = async (agent: any, code: string) => {
       client_secret: process.env.CLIENT_SECRET,
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: redirect_uri_2,
+      redirect_uri: redirect_uri,
       code_verifier: code_challenge,
     };
-    console.log("options", options);
+    // console.log("options", options);
     const response = await axios.post(rootUrl, qs.stringify(options));
     return response.data;
   } catch (error: any) {
