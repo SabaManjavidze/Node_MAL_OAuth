@@ -24,13 +24,6 @@ export const getAuthUrl = async () => {
 export const getAccessToken = async (agent: any, code: string) => {
   try {
     const rootUrl = "https://myanimelist.net/v1/oauth2/token";
-    // const redirect_uri_param: string =
-    //   /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-    //     agent || ""
-    //   )
-    //     ? redirect_uri
-    //     : redirect_uri_2;
-    // console.log("redirect_uri", redirect_uri_param);
     const options = {
       client_id: process.env.CLIENT_ID,
       client_secret: process.env.CLIENT_SECRET,
@@ -39,7 +32,6 @@ export const getAccessToken = async (agent: any, code: string) => {
       redirect_uri: redirect_uri,
       code_verifier: code_challenge,
     };
-    // console.log("options", options);
     const response = await axios.post(rootUrl, qs.stringify(options));
     return response.data;
   } catch (error: any) {

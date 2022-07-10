@@ -9,6 +9,7 @@ import {
   Resolver,
 } from "type-graphql";
 import { ReadManga } from "../entity/ReadManga";
+import { Manga } from "../entity/Manga";
 
 @InputType()
 class ReadMangaInput {
@@ -42,8 +43,9 @@ export default class ReadMangaResolver {
   async createReadManga(
     @Arg("options", () => ReadMangaInput) options: ReadMangaInput,
     @Arg("read_date", { nullable: true }) read_date: string,
-    @Arg("last_read_chapter", { nullable: true })
-    last_read_chapter: string
+    @Arg("last_read_chapter", { nullable: true }) last_read_chapter: string,
+    @Arg("title") title: string,
+    @Arg("img_url") img_url: string
   ) {
     const { user_id, manga_id } = options;
     const now_date = read_date
@@ -57,8 +59,16 @@ export default class ReadMangaResolver {
           minute: "numeric",
           second: "numeric",
         });
-    const exists = await ReadManga.find({ where: { user_id, manga_id } });
-    if (exists[0]) {
+    const rm_exists = await ReadManga.find({ where: { user_id, manga_id } });
+    const manga_exists = await Manga.find({ where: { manga_id } });
+    if (!manga_exists[0]) {
+      Manga.insert({
+        title,
+        img_url,
+        manga_id,
+      });
+    }
+    if (rm_exists[0]) {
       if (last_read_chapter && read_date) {
         await ReadManga.update(
           { user_id, manga_id },
