@@ -4,7 +4,7 @@ dotenv.config();
 export const config: PostgresConnectionOptions = {
   type: "postgres",
   url: process.env.DATABASE_URL || "",
-  synchronize: true,
+  synchronize: process.env.NODE_ENV === "development",
   logging: false,
   entities: [
     "./entity/**/*.ts",
